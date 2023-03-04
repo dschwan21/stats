@@ -1,37 +1,33 @@
-import { gql, ApolloServer } from 'apollo-server-micro'
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
-// define the types that we will be working with
-const typeDefs = gql`
-  type Post {
-    id: String
-    text: String
+import { createYoga, createSchema } from 'graphql-yoga'
+ 
+export const config = {
+  api: {
+    // Disable body parsing (required for file uploads)
+    bodyParser: false
   }
-
+}
+ 
+const schema = createSchema({
+  typeDefs: /* GraphQL */ `
   type Query {
+    hello: String
     posts: [Post]
   }
-
-  type Mutation {
-    createPost(text: String): Post
-  }`;
-
-// define the resolvers that we will be working with, scheme needs to match the typeDefs
-const resolvers = {
+  type Post {
+      id: String
+      text: String
+  }
+  `,
+  resolvers: {
     Query: {
-        posts: (_parent, _args, _context) => {
-            return prisma.post.findMany();
-        }
+        hello: () => 'world',
+        posts: () => [{id: '1', text: 'Hello'}, {id: '2', text: 'World'}]
     }
-}
-
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
-
-
-const handler = apolloServer.createHandler({ path: '/api/graphql' });
-
-export const config = { api: { bodyParser: false } };
-
-export default handler;
+  }
+})
+ 
+export default createYoga({
+  schema,
+  // Needed to be defined explicitly because our endpoint lives at a different path other than `/graphql`
+  graphqlEndpoint: '/api/graphql'
+})
