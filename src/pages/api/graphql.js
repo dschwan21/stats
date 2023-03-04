@@ -21,7 +21,7 @@ const schema = createSchema({
   resolvers: {
     Query: {
         hello: () => 'world',
-        posts: () => [{id: '1', text: 'Hello'}, {id: '2', text: 'World'}]
+        posts: () => [{id: '1', text: 'Hello'}, {id: '2', text: 'hi im post number 2'}]
     }
   }
 })
