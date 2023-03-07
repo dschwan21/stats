@@ -2,9 +2,7 @@ import fetch from "node-fetch";
 import Papa from "papaparse";
 
 async function getPlayerStats(season, player, week) {
-  const baseUrl = "https://github.com/nflverse/nflverse-data/releases/download/player_stats/player_stats.";
-  const fileType = "csv";
-  const url = `${baseUrl}${fileType}`;
+  const url = "https://github.com/nflverse/nflverse-data/releases/download/player_stats/player_stats.csv";
 
   // Fetch the data from the URL
   const response = await fetch(url);
